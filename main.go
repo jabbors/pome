@@ -67,7 +67,8 @@ var (
 	sslmode = app.Flag("sslmode", "database SSL mode (default: disable)").
 		Short('s').Default("disable").PlaceHolder("SSLMODE").String()
 	verbose  = app.Flag("verbose", "").Short('v').Bool()
-	password = app.Flag("password", "").Short('W').Bool()
+	password = app.Flag("password", "(default: '')").
+			Short('W').Default("").PlaceHolder("PASSWORD").String()
 	username = addUsernameFlag(app)
 	database = app.Arg("DBNAME", "").Required().String()
 	// Scheduling flags
@@ -107,12 +108,7 @@ func parseCmdLine(args []string) (command string, err error) {
 func main() {
 	kingpin.MustParse(parseCmdLine(os.Args[1:]))
 	var metrics = initMetricList(Version)
-	pwd := os.Getenv("PGPASSWORD")
-	if *password {
-		fmt.Print("Enter Password: ")
-		fmt.Scanln(&pwd)
-	}
-	db := connectDB(*host, *database, *username, pwd, *sslmode, *port)
+	db := connectDB(*host, *database, *username, *password, *sslmode, *port)
 	context := &appContext{db, &metrics}
 	log.Printf("Starting Pome %s", Version)
 	log.Printf("Application will be available at http://%s:%d", *webHost, *webPort)
