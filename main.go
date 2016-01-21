@@ -45,7 +45,8 @@ var (
 	sslmode = app.Flag("sslmode", "database SSL mode (default: disable)").
 		Short('s').Default("disable").PlaceHolder("SSLMODE").String()
 	verbose  = app.Flag("verbose", "").Short('v').Bool()
-	password = app.Flag("password", "").Short('W').Bool()
+	password = app.Flag("password", "(default: '')").
+			Short('W').Default("").PlaceHolder("PASSWORD").String()
 	username = addUsernameFlag(app)
 	database = app.Arg("DBNAME", "").Required().String()
 )
@@ -59,12 +60,7 @@ func parseCmdLine(args []string) (command string, err error) {
 func main() {
 	kingpin.MustParse(parseCmdLine(os.Args[1:]))
 	var metrics = MetricList{Version: Version}
-	pwd := os.Getenv("PGPASSWORD")
-	if *password {
-		fmt.Print("Enter Password: ")
-		fmt.Scanln(&pwd)
-	}
-	db := connectDB(*host, *database, *username, pwd, *sslmode, *port)
+	db := connectDB(*host, *database, *username, *password, *sslmode, *port)
 	context := &appContext{db, &metrics}
 	go metricScheduler(db, &metrics, indexBloatUpdate, GetIndexBloatResult, 12*60*60, 120)
 	go metricScheduler(db, &metrics, tableBloatUpdate, GetTableBloatResult, 12*60*60, 120)
