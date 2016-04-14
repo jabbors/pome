@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/user"
@@ -69,6 +70,8 @@ var (
 	verbose  = app.Flag("verbose", "").Short('v').Bool()
 	password = app.Flag("password", "(default: '')").
 			Short('W').Default("").PlaceHolder("PASSWORD").String()
+	pwfile = app.Flag("pwfile", "read password from file (default: no)").
+		Short('w').Default("").PlaceHolder("PWFILE").String()
 	username = addUsernameFlag(app)
 	database = app.Arg("DBNAME", "").Required().String()
 	// Scheduling flags
@@ -108,6 +111,13 @@ func parseCmdLine(args []string) (command string, err error) {
 func main() {
 	kingpin.MustParse(parseCmdLine(os.Args[1:]))
 	var metrics = initMetricList(Version)
+	if *pwfile != "" {
+		content, err := ioutil.ReadFile(*pwfile)
+		if err != nil {
+			panic(err)
+		}
+		*password = string(content)
+	}
 	db := connectDB(*host, *database, *username, *password, *sslmode, *port)
 	context := &appContext{db, &metrics}
 	log.Printf("Starting Pome %s", Version)
