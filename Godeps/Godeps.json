@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/rach/pome",
+	"ImportPath": "github.com/jabbors/pome",
 	"GoVersion": "go1.5.2",
 	"Deps": [
 		{
