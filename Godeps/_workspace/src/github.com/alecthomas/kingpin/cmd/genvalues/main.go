@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/rach/pome/Godeps/_workspace/src/github.com/alecthomas/template"
+	"github.com/alecthomas/template"
 )
 
 const (
