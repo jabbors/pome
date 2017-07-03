@@ -24,7 +24,7 @@ export function fetchMetrics({update=false}={}) {
         if(!update){
             dispatch(requestMetrics());
         }
-        return fetch("api/stats")
+        return fetch("/pome/api/stats")
             .then(response => response.json())
             .then(json => dispatch(receiveMetrics(json)));
     };
