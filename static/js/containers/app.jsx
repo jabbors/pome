@@ -27,21 +27,21 @@ class App extends Component {
                 Pome 
               </Link>
               <ul className="nav navbar-nav">
-                <li className={path == "/bloat/indexes" ? "nav-item active" : "nav-item"}>
-                  <Link to='/bloat/indexes' className="nav-link">
+                <li className={path == "bloat/indexes" ? "nav-item active" : "nav-item"}>
+                  <Link to='bloat/indexes' className="nav-link">
                     Indexes Bloat
                     {(() => {
-                       if (path == '/bloat/indexes') {
+                       if (path == 'bloat/indexes') {
                          return <span className="sr-only">(current)</span>;
                        }
                      })()}
                   </Link>
                 </li>
-                <li className={path == "/bloat/tables" ? "nav-item active" : "nav-item"}>
-                   <Link to='/bloat/tables' className="nav-link">
+                <li className={path == "bloat/tables" ? "nav-item active" : "nav-item"}>
+                   <Link to='bloat/tables' className="nav-link">
                     Tables Bloat
                     {(() => {
-                       if (path == '/bloat/tables') {
+                       if (path == 'bloat/tables') {
                          return <span className="sr-only">(current)</span>
                        }
                      })()}
